@@ -15,8 +15,9 @@ ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
 
 # Global flag to stop threads
 stop_threads = False
-target_positions = []
+target_positions = [0]
 # Function to get current position and write to CSV
+
 
 def get_current_position_loop(motors_current, csv_file):
     global target_positions
@@ -25,25 +26,58 @@ def get_current_position_loop(motors_current, csv_file):
         writer.writerow(['Timestamp', 'Actual Position', 'Target Position', 'IMU Data'])
         while not stop_threads:
             positions = []
+            position_threads = []
             for motor in motors_current:
-                position = get_current_position(motor[0], motor[1], motor[2], motor[3])
-                positions.append(position)
+                position_thread = threading.Thread(target=lambda p, m=motor: p.append(get_current_position(m[0], m[1], m[2], m[3])), args=(positions,))
+                position_threads.append(position_thread)
+
+            # Start all position threads
+            for position_thread in position_threads:
+                position_thread.start()
+
+            # Join all position threads
+            for position_thread in position_threads:
+                position_thread.join()
+
             line = 0
             if ser.in_waiting > 0:
-                line = ser.readline()
-            writer.writerow([time.time(), positions, target_positions, line])
+                line = ser.readline().decode('utf-8').strip()
+            writer.writerow([time.time(), str(positions[0]) + ";" + str(positions[1]), target_positions[0], line])
             file.flush()
 
 # Function to move to position in a loop
 def go_to_position_loop(motors_current, positions, cycles):
     global target_positions
     while cycles > 0:
+        motor_threads = []
         for motor in motors_current:
-            move_to_position(motor[0], motor[1], motor[2], motor[3], positions[0])
+            motor_thread = threading.Thread(target=move_to_position, args=(motor[0], motor[1], motor[2], motor[3], positions[0]))
+            motor_threads.append(motor_thread)
+
+        # Start all motor threads
+        for motor_thread in motor_threads:
+            motor_thread.start()
+
+        # Join all motor threads
+        for motor_thread in motor_threads:
+            motor_thread.join()
+
         target_positions = [positions[0]]
         time.sleep(0.5)
+
+        motor_threads = []
         for motor in motors_current:
-            move_to_position(motor[0], motor[1], motor[2], motor[3], positions[1])
+            motor_thread = threading.Thread(target=move_to_position, args=(motor[0], motor[1], motor[2], motor[3], positions[1]))
+            motor_threads.append(motor_thread)
+
+        # Start all motor threads
+        for motor_thread in motor_threads:
+            motor_thread.start()
+
+        # Join all motor threads
+        for motor_thread in motor_threads:
+            motor_thread.join()
+
         target_positions = [positions[1]]
         time.sleep(0.5)
         cycles -= 1
@@ -111,7 +145,7 @@ def move():
     num_of_movements = int(input('Please enter the amount of movements you would like to make: '))
 
     positions = [max_position, min_position]
-    csv_file = 'C:/Users/Jérémie Huser/Documents/Epfl documents/Ma3/PDS_Gimbal/Control/2024_I_AV_SW_MAXON/' + 'positions_' + str(time.time()) + '.csv'
+    csv_file = 'positions_' + str(time.time()) + '.csv'
 
     thread_motor = threading.Thread(target=go_to_position_loop, args=(motors, positions, num_of_movements))
     thread_pos = threading.Thread(target=get_current_position_loop, args=(motors, csv_file))
@@ -122,8 +156,6 @@ def move():
     thread_motor.join()
     stop_threads = True
     thread_pos.join()
-
-
 
 def intro():
     message_home = """
