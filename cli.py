@@ -2,12 +2,16 @@ from epos_setup import epos_setup
 from main import *
 import time
 import threading
+import serial
+
+SERIAL_PORT = 'COM3'
+BAUD_RATE = 500000
 
 AMOUNT_OF_MOTORS = 0
 RPI = 0
 PATH_LIB_WIN = ''
 motors = []
-
+ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
 
 # Global flag to stop threads
 stop_threads = False
@@ -18,13 +22,15 @@ def get_current_position_loop(motors_current, csv_file):
     global target_positions
     with open(csv_file, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['Timestamp', 'Actual Position', 'Target Position'])
+        writer.writerow(['Timestamp', 'Actual Position', 'Target Position', 'IMU Data'])
         while not stop_threads:
             positions = []
             for motor in motors_current:
                 position = get_current_position(motor[0], motor[1], motor[2], motor[3])
                 positions.append(position)
-            writer.writerow([time.time(), positions, target_positions])
+            if ser.in_waiting > 0:
+                line = ser.readline()
+            writer.writerow([time.time(), positions, target_positions, line])
 
 # Function to move to position in a loop
 def go_to_position_loop(motors_current, positions, cycles):
@@ -136,7 +142,7 @@ def intro():
     set_environment(int(input()))
     if RPI == 0:
         set_path(input('Please enter the path to the EposCmd64.dll file (C:/PATH-TO-LIB/EposCmd64.dll): '))
-    mode = input('Please select the mode you would like to use (0 = Position mode, 1 = Velocity mode): ')
+    mode = int(input('Please select the mode you would like to use (0 = Position mode, 1 = Velocity mode): '))
     print('Please select the amount of motors you would like to control.')
     motor_selector()
     print('Setting up motors...')
@@ -151,12 +157,13 @@ def main():
     while True:
         choice = 0
         print('You can now choose the following options, remember to enable the motors before moving them.')
-        print('• Enable Motors (1)', 'green')
-        print('• Disable Motors (2)', 'green')
-        print('• Go Home (3)', 'green')
-        print('• Set Home (4)', 'green')
-        print('• Move Motors (5)', 'green')
-        print('• Get position (6)', 'green')
+        print('• Enable Motors (1)')
+        print('• Disable Motors (2)')
+        print('• Go Home (3)')
+        print('• Set Home (4)')
+        print('• Move Motors (5)')
+        print('• Get position (6)')
+        print('• Terminate program (7)')
         choice = int(input())
         if choice == 1:
             enable()
@@ -170,6 +177,8 @@ def main():
             move()
         elif choice == 6:
             get_current_position_motors()
+        elif choice == 7:
+            exit()
         else:
             print('Invalid input, please enter a valid number')
             main()

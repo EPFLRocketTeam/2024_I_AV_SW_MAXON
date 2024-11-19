@@ -42,7 +42,7 @@ def epos_setup(RPI, NodeID, usb, path_win, mode):
 
         # Set operation mode to profile position mode
         ret = epos.VCS_ActivateProfilePositionMode(keyhandle, NodeID, byref(pErrorCode))
-
+        print(ret)
         # Set position profile
         ret = epos.VCS_SetPositionProfile(keyhandle, NodeID, VELOCITY, ACCELERATION, DECELERATION, byref(pErrorCode))
     elif keyhandle != 0 and mode == 1:
@@ -50,7 +50,7 @@ def epos_setup(RPI, NodeID, usb, path_win, mode):
 
         # Set operation mode to profile position mode
         ret = epos.VCS_ActivateProfileVelocityMode(keyhandle, NodeID, byref(pErrorCode))
-
+        print(ret)
         # Set position profile
         ret = epos.VCS_SetVelocityProfile(keyhandle, NodeID, ACCELERATION, DECELERATION, byref(pErrorCode))
     else:
