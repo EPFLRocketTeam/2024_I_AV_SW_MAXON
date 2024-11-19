@@ -28,9 +28,11 @@ def get_current_position_loop(motors_current, csv_file):
             for motor in motors_current:
                 position = get_current_position(motor[0], motor[1], motor[2], motor[3])
                 positions.append(position)
+            line = 0
             if ser.in_waiting > 0:
                 line = ser.readline()
             writer.writerow([time.time(), positions, target_positions, line])
+            file.flush()
 
 # Function to move to position in a loop
 def go_to_position_loop(motors_current, positions, cycles):
@@ -109,7 +111,7 @@ def move():
     num_of_movements = int(input('Please enter the amount of movements you would like to make: '))
 
     positions = [max_position, min_position]
-    csv_file = 'positions_' + str(time.time()) + '.csv'
+    csv_file = 'C:/Users/Jérémie Huser/Documents/Epfl documents/Ma3/PDS_Gimbal/Control/2024_I_AV_SW_MAXON/' + 'positions_' + str(time.time()) + '.csv'
 
     thread_motor = threading.Thread(target=go_to_position_loop, args=(motors, positions, num_of_movements))
     thread_pos = threading.Thread(target=get_current_position_loop, args=(motors, csv_file))
