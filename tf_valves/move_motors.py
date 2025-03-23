@@ -27,17 +27,25 @@ GPIO.setup(CONTROL_VALVE_PIN_2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # VALVE_2
 epos_1, keyhandle_1, NodeID_1, pErrorCode_1, pDeviceErrorCode_1 = epos_setup(NODE_ID_1, USB_1, VELOCITY, ACCELERATION, DECELERATION)
 epos_2, keyhandle_2, NodeID_2, pErrorCode_2, pDeviceErrorCode_2 = epos_setup(NODE_ID_2, USB_2, VELOCITY, ACCELERATION, DECELERATION)
 
+PIN_1_STATE = GPIO.input(VALVE_PIN_1)
+PIN_2_STATE = GPIO.input(VALVE_PIN_2)
+
+
 while True:
-    if GPIO.input(VALVE_PIN_1) == GPIO.LOW:
+    if GPIO.input(VALVE_PIN_1) == GPIO.LOW and PIN_1_STATE == GPIO.HIGH:
+        PIN_1_STATE = GPIO.LOW
         move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, 0)
         time.sleep(0.1)
-    else:
+    elif GPIO.input(VALVE_PIN_1) == GPIO.HIGH and PIN_1_STATE == GPIO.LOW:
+        PIN_1_STATE = GPIO.HIGH
         move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, VALVE_OPEN_INCREMENT)
         time.sleep(0.1)
-    if GPIO.input(VALVE_PIN_2) == GPIO.LOW:
+    if GPIO.input(VALVE_PIN_2) == GPIO.LOW and PIN_2_STATE == GPIO.HIGH:
+        PIN_2_STATE = GPIO.LOW
         move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, 0)
         time.sleep(0.1)
-    else:
+    elif GPIO.input(VALVE_PIN_2) == GPIO.HIGH and PIN_2_STATE == GPIO.LOW:
+        PIN_2_STATE = GPIO.HIGH
         move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, VALVE_OPEN_INCREMENT)
         time.sleep(0.1)
     if GPIO.input(CONTROL_VALVE_PIN_1) != GPIO.LOW:
