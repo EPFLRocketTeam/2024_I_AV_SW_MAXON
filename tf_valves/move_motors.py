@@ -44,4 +44,5 @@ while True:
         while GPIO.input(CONTROL_VALVE_PIN_2) != GPIO.LOW:
             go_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, HOMING_INCREMENT)
         set_home_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2)
+    print("TEST")
 
