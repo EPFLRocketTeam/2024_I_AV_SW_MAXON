@@ -28,10 +28,6 @@ epos_1, keyhandle_1, NodeID_1, pErrorCode_1, pDeviceErrorCode_1 = epos_setup(NOD
 epos_2, keyhandle_2, NodeID_2, pErrorCode_2, pDeviceErrorCode_2 = epos_setup(NODE_ID_2, USB_2, VELOCITY, ACCELERATION, DECELERATION)
 
 while True:
-    print('Valve 1: ', GPIO.input(VALVE_PIN_1))
-    print('Valve 2: ', GPIO.input(VALVE_PIN_2))
-    print('Control Valve 1: ', GPIO.input(CONTROL_VALVE_PIN_1))
-    print('Control Valve 2: ', GPIO.input(CONTROL_VALVE_PIN_2))
     if GPIO.input(VALVE_PIN_1) == GPIO.LOW:
         move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, 0)
     else:
