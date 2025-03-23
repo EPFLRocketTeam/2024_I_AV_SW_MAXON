@@ -64,17 +64,20 @@ def get_position_is(epos, keyhandle, NodeID, pErrorCode):
 
 def go_to_position(epos, keyhandle, NodeID, pErrorCode, position):
     ret = epos.VCS_MoveToPosition(keyhandle, NodeID, position, 0, 0, byref(pErrorCode))
+    check_error(ret, 'go to position', 1)
     ret = WaitAcknowledged(epos, keyhandle, NodeID, pErrorCode)
 
 
 def move_to_position(epos, keyhandle, NodeID, pErrorCode, position):
     ret = epos.VCS_MoveToPosition(keyhandle, NodeID, position, 1, 1, byref(pErrorCode))
+    check_error(ret, 'move to position', 1)
     ret = WaitAcknowledged(epos, keyhandle, NodeID, pErrorCode)
 
 
 def set_home_position(epos, keyhandle, NodeID, pErrorCode):
     current_position = get_current_position(epos, keyhandle, NodeID, pErrorCode)
 
+    print(f"Current position: {current_position}")
 
     object_index = 0x30B0
     object_sub_index = 0x00
@@ -93,6 +96,11 @@ def set_home_position(epos, keyhandle, NodeID, pErrorCode):
                                 number_of_bytes_to_read,
                                 ctypes.byref(number_of_bytes_read),
                                 ctypes.byref(pErrorCode))
+
+    if ret == 0:
+        print(f"Error setting home position: {pErrorCode.value}")
+    else:
+        print("Home position set successfully")
 
     epos.VCS_DefinePosition(keyhandle, NodeID, 0, byref(pErrorCode))
 
