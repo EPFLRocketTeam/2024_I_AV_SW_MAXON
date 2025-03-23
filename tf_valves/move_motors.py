@@ -30,12 +30,16 @@ epos_2, keyhandle_2, NodeID_2, pErrorCode_2, pDeviceErrorCode_2 = epos_setup(NOD
 while True:
     if GPIO.input(VALVE_PIN_1) == GPIO.LOW:
         move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, 0)
+        time.sleep(0.1)
     else:
         move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, VALVE_OPEN_INCREMENT)
+        time.sleep(0.1)
     if GPIO.input(VALVE_PIN_2) == GPIO.LOW:
         move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, 0)
+        time.sleep(0.1)
     else:
         move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, VALVE_OPEN_INCREMENT)
+        time.sleep(0.1)
     if GPIO.input(CONTROL_VALVE_PIN_1) != GPIO.LOW:
         while GPIO.input(CONTROL_VALVE_PIN_1) != GPIO.LOW:
             go_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, HOMING_INCREMENT)
@@ -46,6 +50,4 @@ while True:
             go_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, HOMING_INCREMENT)
         time.sleep(1)
         set_home_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2)
-    time.sleep(0.3)
-
 
