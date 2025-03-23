@@ -64,13 +64,13 @@ def get_position_is(epos, keyhandle, NodeID, pErrorCode):
 
 def go_to_position(epos, keyhandle, NodeID, pErrorCode, position):
     ret = epos.VCS_MoveToPosition(keyhandle, NodeID, position, 0, 0, byref(pErrorCode))
-    check_error(ret, 'go to position', 1)
+    print(check_error(ret, 'go to position', 1))
     ret = WaitAcknowledged(epos, keyhandle, NodeID, pErrorCode)
 
 
 def move_to_position(epos, keyhandle, NodeID, pErrorCode, position):
     ret = epos.VCS_MoveToPosition(keyhandle, NodeID, position, 1, 1, byref(pErrorCode))
-    check_error(ret, 'move to position', 1)
+    print(check_error(ret, 'move to position', 1))
     ret = WaitAcknowledged(epos, keyhandle, NodeID, pErrorCode)
 
 
