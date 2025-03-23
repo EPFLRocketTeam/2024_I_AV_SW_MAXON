@@ -94,10 +94,6 @@ def set_home_position(epos, keyhandle, NodeID, pErrorCode):
                                 ctypes.byref(number_of_bytes_read),
                                 ctypes.byref(pErrorCode))
 
-    if ret == 0:
-    else:
-        print("Home position set successfully")
-
     epos.VCS_DefinePosition(keyhandle, NodeID, 0, byref(pErrorCode))
 
     # Assuming check_error is a valid function that handles error reporting
