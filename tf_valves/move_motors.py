@@ -39,12 +39,12 @@ while True:
     if GPIO.input(CONTROL_VALVE_PIN_1) != GPIO.LOW:
         while GPIO.input(CONTROL_VALVE_PIN_1) != GPIO.LOW:
             go_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, HOMING_INCREMENT)
-        time.sleep(0.5)
+        time.sleep(1)
         set_home_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1)
     if GPIO.input(CONTROL_VALVE_PIN_2) != GPIO.LOW:
         while GPIO.input(CONTROL_VALVE_PIN_2) != GPIO.LOW:
             go_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, HOMING_INCREMENT)
-        time.sleep(0.5)
+        time.sleep(1)
         set_home_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2)
     time.sleep(0.1)
 
