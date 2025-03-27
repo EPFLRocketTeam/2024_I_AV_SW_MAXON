@@ -6,7 +6,7 @@ from main import check_error, set_home_position
 # Platform
 # RPI PATHS
 path_ftd_rpi = '../v8/libftd2xx.so.1.4.8'
-path_lib_rpi = '../v8/v8/libEposCmd.so.6.8.1.0'
+path_lib_rpi = '../v8/libEposCmd.so.6.8.1.0'
 
 def epos_setup(NodeID, usb, velocity, acceleration, deceleration):
     # EPOS Variables
