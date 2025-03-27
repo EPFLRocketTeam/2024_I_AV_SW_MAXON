@@ -2,7 +2,7 @@ from epos_setup import epos_setup
 from main import *
 import time
 import threading
-import serial
+#import serial
 
 SERIAL_PORT = 'COM3'
 BAUD_RATE = 500000
@@ -11,7 +11,7 @@ AMOUNT_OF_MOTORS = 0
 RPI = 0
 PATH_LIB_WIN = ''
 motors = []
-ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
+#ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
 
 # Global flag to stop threads
 stop_threads = False
@@ -40,10 +40,10 @@ def get_current_position_loop(motors_current, csv_file):
                 position_thread.join()
 
             line = 0
-            if ser.in_waiting > 0:
-                line = ser.readline().decode('utf-8').strip()
-            writer.writerow([time.time(), str(positions[0]) + ";" + str(positions[1]), target_positions[0], line])
-            file.flush()
+            #if ser.in_waiting > 0:
+            #    line = ser.readline().decode('utf-8').strip()
+            #writer.writerow([time.time(), str(positions[0]) + ";" + str(positions[1]), target_positions[0], line])
+            #file.flush()
 
 # Function to move to position in a loop
 def go_to_position_loop(motors_current, positions, cycles):

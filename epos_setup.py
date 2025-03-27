@@ -4,8 +4,8 @@ import time
 # Variables
 # Platform
 # RPI PATHS
-path_ftd_rpi = '/home/icarus/libftd2xx.so.1.4.8'
-path_lib_rpi = '/home/icarus/libEposCmd.so.6.8.1.0'
+path_ftd_rpi = 'v8/libftd2xx.so.1.4.8'
+path_lib_rpi = 'v8/libEposCmd.so.6.8.1.0'
 
 # Windows PATHS
 path_lib_win = 'C:/Users/yann/PycharmProjects/Maxon-interface/EposCmd64.dll'
