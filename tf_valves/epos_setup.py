@@ -13,10 +13,6 @@ def epos_setup(NodeID, usb, velocity, acceleration, deceleration):
     ret = 0
     keyhandle = 0
 
-    VELOCITY = 6000    # RPM
-    acceleration = 80000   # RPM/s
-    deceleration = 80000    # RPM/s
-
     pErrorCode = c_uint()
     pDeviceErrorCode = c_uint()
 
