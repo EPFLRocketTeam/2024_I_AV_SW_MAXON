@@ -1,0 +1,23 @@
+# Move this file to /etc/systemd/system/tf_valves.service and execute the following commands:
+# sudo systemctl daemon-reload
+# sudo systemctl enable tf_valves.service
+# sudo systemctl start tf_valves.service
+# sudo systemctl status tf_valves.service
+#
+# After the first time executing the service, you can use the following commands to restart the service:
+# sudo systemctl restart tf_valves.service
+
+[Unit]
+Description=Valve systemd service
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/ert/projects/2024_I_AV_SW_MAXON/tf_valves/move_motors.py
+WorkingDirectory=/home/ert
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=ert
+
+[Install]
+WantedBy=multi-user.target
