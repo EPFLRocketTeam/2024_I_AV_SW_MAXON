@@ -96,6 +96,7 @@ def filter():
 while True:
 
     while True:
+        filter()
         print(f'Pins: {VALVE_1_PIN_VALUE_FULL}, {VALVE_1_PIN_VALUE_INTERMEDIATE}, {VALVE_1_PIN_VALUE_HOME}, {VALVE_2_PIN_VALUE_FULL}, {VALVE_2_PIN_VALUE_INTERMEDIATE}, {VALVE_2_PIN_VALUE_HOME}')
 
 
