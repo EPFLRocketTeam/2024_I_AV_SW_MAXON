@@ -38,7 +38,10 @@ PIN_2_STATE_FULL = GPIO.input(VALVE_PIN_2_FULL)
 #PIN_1_STATE_INTERMEDIATE = GPIO.input(VALVE_PIN_1_INTERMEDIATE)
 #PIN_2_STATE_INTERMEDIATE = GPIO.input(VALVE_PIN_2_INTERMEDIATE)
 
+while True:
+    print("PIN 1: ", GPIO.input(VALVE_PIN_1_FULL), "PIN 2: ", GPIO.input(VALVE_PIN_2_FULL), "CONTROL PIN 1: ", GPIO.input(CONTROL_VALVE_PIN_1), "CONTROL PIN 2: ", GPIO.input(CONTROL_VALVE_PIN_2))
 
+"""
 while True:
     if GPIO.input(VALVE_PIN_1_FULL) == GPIO.LOW and PIN_1_STATE_FULL == GPIO.HIGH:
         print('test1')
@@ -60,7 +63,6 @@ while True:
         PIN_2_STATE_FULL = GPIO.HIGH
         move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, VALVE_OPEN_INCREMENT_FULL)
         time.sleep(1)
-    """
     if GPIO.input(VALVE_PIN_1_INTERMEDIATE) == GPIO.LOW and PIN_1_STATE_INTERMEDIATE == GPIO.HIGH:
         PIN_1_STATE = GPIO.LOW
         move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, 0)
@@ -77,7 +79,7 @@ while True:
         PIN_2_STATE = GPIO.HIGH
         move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, VALVE_OPEN_INCREMENT_INTERMEDIATE)
         time.sleep(1)
-    """
+    
     if GPIO.input(CONTROL_VALVE_PIN_1) != GPIO.LOW:
         while GPIO.input(CONTROL_VALVE_PIN_1) != GPIO.LOW:
             go_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, HOMING_INCREMENT)
@@ -88,3 +90,4 @@ while True:
             go_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, HOMING_INCREMENT)
         time.sleep(1)
         set_home_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2)
+"""
