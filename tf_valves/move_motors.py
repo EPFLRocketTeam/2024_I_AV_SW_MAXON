@@ -41,19 +41,19 @@ PIN_2_STATE_FULL = GPIO.input(VALVE_PIN_2_FULL)
 
 while True:
     if GPIO.input(VALVE_PIN_1_FULL) == GPIO.LOW and PIN_1_STATE_FULL == GPIO.HIGH:
-        PIN_1_STATE = GPIO.LOW
+        PIN_1_STATE_FULL = GPIO.LOW
         move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, 0)
         time.sleep(1)
     elif GPIO.input(VALVE_PIN_1_FULL) == GPIO.HIGH and PIN_1_STATE_FULL == GPIO.LOW:
-        PIN_1_STATE = GPIO.HIGH
+        PIN_1_STATE_FULL = GPIO.HIGH
         move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, VALVE_OPEN_INCREMENT_FULL)
         time.sleep(1)
     if GPIO.input(VALVE_PIN_2_FULL) == GPIO.LOW and PIN_2_STATE_FULL == GPIO.HIGH:
-        PIN_2_STATE = GPIO.LOW
+        PIN_2_STATE_FULL = GPIO.LOW
         move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, 0)
         time.sleep(1)
     elif GPIO.input(VALVE_PIN_2_FULL) == GPIO.HIGH and PIN_2_STATE_FULL == GPIO.LOW:
-        PIN_2_STATE = GPIO.HIGH
+        PIN_2_STATE_FULL = GPIO.HIGH
         move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, VALVE_OPEN_INCREMENT_FULL)
         time.sleep(1)
     """
