@@ -58,5 +58,3 @@ while True:
             go_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, HOMING_INCREMENT)
         time.sleep(1)
         set_home_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2)
-    time.sleep(0.5)
-
