@@ -40,7 +40,7 @@ PIN_2_STATE_FULL = GPIO.input(VALVE_PIN_2_FULL)
 
 
 while True:
-    if GPIO.input(VALVE_PIN_1_FULL) == GPIO.LOW and PIN_1_STATE_FULL == GPIO.HIGH
+    if GPIO.input(VALVE_PIN_1_FULL) == GPIO.LOW and PIN_1_STATE_FULL == GPIO.HIGH:
         print('test1')
         PIN_1_STATE_FULL = GPIO.LOW
         move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, 0)
