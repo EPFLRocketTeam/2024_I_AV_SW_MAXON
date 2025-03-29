@@ -40,6 +40,9 @@ while command == "homing":
         set_home_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2)
     command = input("Please enter a command [homing, movement]: ")
 
+set_home_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1)
+set_home_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2)
+
 print("Entering movement stage")
 while True:
     command = input("Command structure [Valve 1,2] [angle in degrees] => 1 90: ").split(" ")
