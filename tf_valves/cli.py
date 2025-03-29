@@ -14,7 +14,7 @@ DECELERATION = 4294967295  # RPM/s
 
 
 def deg_to_inc(deg):
-    return (deg / 360) * VALVE_INCREMENT_PER_TURN
+    return int((deg / 360) * VALVE_INCREMENT_PER_TURN)
 
 
 print("Entering setup")
