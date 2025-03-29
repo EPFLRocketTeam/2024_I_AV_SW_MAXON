@@ -46,10 +46,12 @@ set_home_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2)
 print("Entering movement stage")
 while True:
     command = input("Command structure [Valve 1,2] [angle in degrees] => 1 90: ").split(" ")
-    if int(command[0] == 1):
-        print(f"Angle: {int(command[1])}, Inc: {deg_to_inc(int(command[1]))}")
-        go_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, deg_to_inc(int(command[1])))
+    if int(command[0]) == 1:
+        degrees = deg_to_inc(int(command[1]))
+        print(f"Angle: {int(command[1])}, Inc: {degrees}")
+        move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, degrees)
     else:
-        print(f"Angle: {int(command[1])}, Inc: {deg_to_inc(int(command[1]))}")
-        go_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, deg_to_inc(int(command[1])))
+        degrees = deg_to_inc(int(command[1]))
+        print(f"Angle: {int(command[1])}, Inc: {degrees}")
+        move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, degrees)
     print(f"Moving valve {command[0]} to {command[1]}")
