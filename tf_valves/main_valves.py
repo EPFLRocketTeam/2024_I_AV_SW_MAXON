@@ -85,6 +85,8 @@ while True:
         i_status_epos_E = 1
         i_status_epos_O = 1
     except Exception as e:
+        epos_1, keyhandle_1, NodeID_1, pErrorCode_1, pDeviceErrorCode_1 = epos_setup(NODE_ID_1, USB_1, VELOCITY, ACCELERATION, DECELERATION)
+        epos_2, keyhandle_2, NodeID_2, pErrorCode_2, pDeviceErrorCode_2 = epos_setup(NODE_ID_2, USB_2, VELOCITY, ACCELERATION, DECELERATION)
         i_status_epos_E = 2
         i_status_epos_O = 2
 
