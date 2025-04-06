@@ -23,7 +23,7 @@ try:
         time.sleep(0.1)
 
 except Exception as e:
-    print(f"Erreur : {e}")
+    print(f"Erreur OPC UA: {e}")
 
 finally:
     client.disconnect()
