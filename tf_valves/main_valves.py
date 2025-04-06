@@ -62,6 +62,10 @@ i_status_epos_O = 0
 old_i_status_epos_E = 0
 old_i_status_epos_O = 0
 
+# epos
+OLD_VALVE_1_INCREMENT = 1
+OLD_VALVE_2_INCREMENT = 1
+
 
 ###################     MAIN LOOP     ###################
 while True:
@@ -81,19 +85,20 @@ while True:
             client.get_node(node_i_status_epos_O).set_value(i_status_epos_O, ua.VariantType.Int16)
             old_i_status_epos_O = i_status_epos_O
 
-
-
-
     except Exception as e:
         print(f"Erreur OPC UA read/write data: {e}")
     
     VALVE_1_INCREMENT = int((VALVE_1_INCREMENT_FULL - VALVE_1_INCREMENT_CLOSED) * w_main_E / 100)
     VALVE_2_INCREMENT = int((VALVE_2_INCREMENT_FULL - VALVE_2_INCREMENT_CLOSED) * w_main_O / 100)
     try:
-        move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, VALVE_1_INCREMENT)
-        move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, VALVE_2_INCREMENT)
-        i_status_epos_E = 1
-        i_status_epos_O = 1
+        if VALVE_1_INCREMENT != OLD_VALVE_1_INCREMENT:
+            move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, VALVE_1_INCREMENT)
+            OLD_VALVE_1_INCREMENT = VALVE_1_INCREMENT
+            i_status_epos_E = 1
+        if VALVE_2_INCREMENT != OLD_VALVE_2_INCREMENT:
+            move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, VALVE_2_INCREMENT)
+            OLD_VALVE_2_INCREMENT = VALVE_2_INCREMENT
+            i_status_epos_O = 1
     except Exception as e:
         epos_1, keyhandle_1, NodeID_1, pErrorCode_1, pDeviceErrorCode_1 = epos_setup(NODE_ID_1, USB_1, VELOCITY, ACCELERATION, DECELERATION)
         epos_2, keyhandle_2, NodeID_2, pErrorCode_2, pDeviceErrorCode_2 = epos_setup(NODE_ID_2, USB_2, VELOCITY, ACCELERATION, DECELERATION)
