@@ -25,7 +25,7 @@ VALVE_1_INCREMENT_CLOSED = 0
 VALVE_2_INCREMENT_CLOSED = 0
 VALVE_1_INCREMENT_FULL = int(-1/8 * VALVE_INCREMENT_per_turn)
 VALVE_2_INCREMENT_FULL = int(-1/8 * VALVE_INCREMENT_per_turn)
-HOMING_INCREMENT = 10000
+HOMING_INCREMENT = 1000
 VELOCITY = 20000   # RPM (optimal 7142)
 ACCELERATION = 4294967295    # RPM/s
 DECELERATION = 4294967295    # RPM/s
@@ -110,7 +110,7 @@ while True:
     # Tests
     if b_Homing_E == 1:
         go_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, HOMING_INCREMENT)
-        time.sleep(TIME_SLEEP)
+        time.sleep(0.1)
         set_home_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1)
     
 
