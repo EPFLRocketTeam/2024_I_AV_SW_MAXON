@@ -24,15 +24,15 @@ USB_2 = b'USB1'
 VALVE_INCREMENT_per_turn = 1703936 # 90 degrees 1703936 (131072 steps/turn on motor)
 VALVE_1_INCREMENT_CLOSED = 0
 VALVE_2_INCREMENT_CLOSED = 0
-VALVE_1_INCREMENT_FULL = int(1/4 * VALVE_INCREMENT_per_turn)
-VALVE_2_INCREMENT_FULL = int(1/4 * VALVE_INCREMENT_per_turn)
+VALVE_1_INCREMENT_FULL = int(-1/8 * VALVE_INCREMENT_per_turn)
+VALVE_2_INCREMENT_FULL = int(-1/8 * VALVE_INCREMENT_per_turn)
 HOMING_INCREMENT = 1000
-VELOCITY = 7142   # RPM
+VELOCITY = 20000   # RPM (optimal 7142)
 ACCELERATION = 4294967295    # RPM/s
 DECELERATION = 4294967295    # RPM/s
 
 # GENERAL CONFIGURATION
-TIME_SLEEP = 0.05
+TIME_SLEEP = 0.010 # [s]
 
 
 
@@ -50,27 +50,37 @@ except Exception as e:
 
 
 
+###################     VARIABLES     ###################
+# input ( read from OPCUA )
+b_Homing_E = 0
+b_Homing_O = 0
+w_main_E = 0
+w_main_O = 0
 
-VALVE_1_STATE = 0
-VALVE_2_STATE = 0
+# output ( write to OPCUA )
+i_status_epos_E = 0
+i_status_epos_O = 0
 
+
+###################     MAIN LOOP     ###################
 while True:
 
     # Read the values from the OPC UA server
     try:
         b_Homing_E = client.get_node(node_b_Homing_E).get_value()
         b_Homing_O = client.get_node(node_b_Homing_O).get_value()
-        i_status_epos_E = client.get_node(node_i_status_epos_E).get_value()
-        i_status_epos_O = client.get_node(node_i_status_epos_O).get_value()
         w_main_E = client.get_node(node_w_main_E).get_value()
         w_main_O = client.get_node(node_w_main_O).get_value()
+
+        client.get_node(node_i_status_epos_E).set_value(i_status_epos_E, ua.VariantType.Int32)
+        client.get_node(node_i_status_epos_O).set_value(i_status_epos_O, ua.VariantType.Int32)
     except Exception as e:
-        print(f"Erreur OPC UA reading data: {e}")
+        print(f"Erreur OPC UA read/write data: {e}")
 
     VALVE_1_INCREMENT = int((VALVE_1_INCREMENT_FULL - VALVE_1_INCREMENT_CLOSED) * w_main_E / 100)
     VALVE_2_INCREMENT = int((VALVE_2_INCREMENT_FULL - VALVE_2_INCREMENT_CLOSED) * w_main_O / 100)
-    move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, VALVE_1_INCREMENT)
-    move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, VALVE_2_INCREMENT)
+    i_status_epos_E = int(move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, VALVE_1_INCREMENT))
+    i_status_epos_O = int(move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, VALVE_2_INCREMENT))
 
     time.sleep(TIME_SLEEP)
 
