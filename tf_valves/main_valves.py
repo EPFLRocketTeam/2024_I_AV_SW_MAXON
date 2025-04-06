@@ -100,7 +100,7 @@ while True:
     print(f"Temps de cycle : {time.time()-t} secondes")
     t = time.time()
 
-    time.sleep(TIME_SLEEP)
+    #time.sleep(TIME_SLEEP)
 
     #if VALVE_1_PIN_VALUE_FULL == GPIO.LOW and PIN_1_STATE_FULL == GPIO.HIGH:
     #    print('test1')
