@@ -71,8 +71,8 @@ while True:
         b_Homing_O = client.get_node(node_b_Homing_O).get_value()
         w_main_E = client.get_node(node_w_main_E).get_value()
         w_main_O = client.get_node(node_w_main_O).get_value()
-        client.get_node(node_i_status_epos_E).set_value(i_status_epos_E, ua.VariantType.Int32)
-        client.get_node(node_i_status_epos_O).set_value(i_status_epos_O, ua.VariantType.Int32)
+        client.get_node(node_i_status_epos_E).set_value(i_status_epos_E, ua.VariantType.Int16)
+        client.get_node(node_i_status_epos_O).set_value(i_status_epos_O, ua.VariantType.Int16)
     except Exception as e:
         print(f"Erreur OPC UA read/write data: {e}")
     
