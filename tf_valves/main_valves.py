@@ -108,11 +108,10 @@ while True:
         i_status_epos_O = 2
 
     # Tests
-    while b_Homing_E == 1:
+    if b_Homing_E == 1:
         go_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, HOMING_INCREMENT)
         time.sleep(TIME_SLEEP)
         set_home_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1)
-        time.sleep(TIME_SLEEP)
     
 
     #time.sleep(TIME_SLEEP)
