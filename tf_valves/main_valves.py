@@ -62,11 +62,13 @@ i_status_epos_E = 0
 i_status_epos_O = 0
 
 # test
-t = 0
+t1 = 0
+t2 = 0
+t3 = 0
 
 ###################     MAIN LOOP     ###################
 while True:
-
+    t1 = time.time()
     # Read the values from the OPC UA server
     try:
         b_Homing_E = client.get_node(node_b_Homing_E).get_value()
@@ -78,7 +80,7 @@ while True:
     except Exception as e:
         print(f"Erreur OPC UA read/write data: {e}")
     
-
+    t2 = time.time()
     VALVE_1_INCREMENT = int((VALVE_1_INCREMENT_FULL - VALVE_1_INCREMENT_CLOSED) * w_main_E / 100)
     VALVE_2_INCREMENT = int((VALVE_2_INCREMENT_FULL - VALVE_2_INCREMENT_CLOSED) * w_main_O / 100)
     try:
@@ -92,13 +94,13 @@ while True:
         i_status_epos_E = 2
         i_status_epos_O = 2
 
-
+    t3 = time.time()
     # Tests
     if b_Homing_E == 1: i_status_epos_E = 3
     if b_Homing_O == 1: i_status_epos_O = 4
     
-    print(f"Temps de cycle : {time.time()-t} secondes")
-    t = time.time()
+    print(f"Temps de cycle : opcua: {t2-t1}s, epos: {t3-t2}s")
+    
 
     #time.sleep(TIME_SLEEP)
 
