@@ -1,8 +1,14 @@
-from opcua import Client
+from opcua import Client, ua
+import base64
 import time
 
 OPCUA_SERVER_URL = "opc.tcp://192.168.1.17:4840"
-NODE_ID = "ns=5;b=AQAAAKbhKnGK9zM6o+Y1NI3mYGeQ7iJ7heYzOovcCHuE6i5ztsZA"
+
+# Décode la chaîne base64 (le contenu après b=)
+bytes_id = base64.b64decode("AQAAAKbhKnGK9zM6o+Y1NI3mYGeQ7iJ7heYzOovcCHuE6i5ztsZA")
+
+# Crée un NodeId de type ByteString (identificateur = bytes, namespace = 5)
+node = ua.NodeId(bytes_id, 5, ua.NodeIdType.ByteString)
 
 client = Client(OPCUA_SERVER_URL)
 
@@ -11,10 +17,9 @@ try:
     print("Connecté au serveur OPC UA")
 
     while True:
-        # On ne met pas :.2f ici car ce n’est pas forcément un float
-        b_Homing_E = client.get_node(NODE_ID).get_value()
+        print("Lecture de la valeur du noeud...")
+        b_Homing_E = client.get_node(node).get_value()
         print(f"b_Homing_E : {b_Homing_E}")
-
         time.sleep(0.1)
 
 except Exception as e:
