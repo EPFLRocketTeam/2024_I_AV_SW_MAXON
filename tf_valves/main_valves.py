@@ -109,8 +109,7 @@ while True:
     if b_Homing_E == 1: i_status_epos_E = 3
     if b_Homing_O == 1: i_status_epos_O = 4
     
-    print(f"b_Homing_E: {t2-t1}, b_Homing_O: {t3-t2}, w_main_E: {t4-t3}, w_main_O: {t5-t4}, i_status_epos_E: {t6-t5}, i_status_epos_O: {t7-t6}")
-
+    print(f"b_Homing_E: {b_Homing_E}, b_Homing_O: {b_Homing_O}, w_main_E: {w_main_E}, w_main_O: {w_main_O}, i_status_epos_E: {i_status_epos_E}, i_status_epos_O: {i_status_epos_O}")
     #time.sleep(TIME_SLEEP)
 
     #if VALVE_1_PIN_VALUE_FULL == GPIO.LOW and PIN_1_STATE_FULL == GPIO.HIGH:
