@@ -110,11 +110,11 @@ while True:
     # homming
     if b_Homing_E == 1:
         go_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, HOMING_INCREMENT)
-        time.sleep(0.05)
+        time.sleep(0.1)
         set_home_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1)
     if b_Homing_O == 1:
         go_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, HOMING_INCREMENT)
-        time.sleep(0.05)
+        time.sleep(0.1)
         set_home_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2)
 
     #time.sleep(TIME_SLEEP)
