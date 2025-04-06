@@ -66,6 +66,9 @@ old_i_status_epos_O = 0
 OLD_VALVE_1_INCREMENT = 1
 OLD_VALVE_2_INCREMENT = 1
 
+#test
+t = 0
+
 
 ###################     MAIN LOOP     ###################
 while True:
@@ -87,6 +90,7 @@ while True:
 
     except Exception as e:
         print(f"Erreur OPC UA read/write data: {e}")
+        client.connect()
     
     VALVE_1_INCREMENT = int((VALVE_1_INCREMENT_FULL - VALVE_1_INCREMENT_CLOSED) * w_main_E / 100)
     VALVE_2_INCREMENT = int((VALVE_2_INCREMENT_FULL - VALVE_2_INCREMENT_CLOSED) * w_main_O / 100)
@@ -109,7 +113,9 @@ while True:
     if b_Homing_E == 1: i_status_epos_E = 3
     if b_Homing_O == 1: i_status_epos_O = 4
     
-    print(f"b_Homing_E: {b_Homing_E}, b_Homing_O: {b_Homing_O}, w_main_E: {w_main_E}, w_main_O: {w_main_O}, i_status_epos_E: {i_status_epos_E}, i_status_epos_O: {i_status_epos_O}")
+    print(f"cycle: {time.time()-t}")
+    t = time.time()
+
     #time.sleep(TIME_SLEEP)
 
     #if VALVE_1_PIN_VALUE_FULL == GPIO.LOW and PIN_1_STATE_FULL == GPIO.HIGH:
