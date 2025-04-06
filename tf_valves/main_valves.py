@@ -4,7 +4,6 @@ from opcua import Client, ua
 import base64
 import time
 
-
 #CONFIGURATION OPCUA
 OPCUA_SERVER_URL = "opc.tcp://192.168.1.17:4840"
 client = Client(OPCUA_SERVER_URL)
@@ -14,7 +13,7 @@ node_i_status_epos_E = ua.NodeId(base64.b64decode("AQAAAKbhKnGK9zM6o+Y1NI3mYGeQ7
 node_i_status_epos_O = ua.NodeId(base64.b64decode("AQAAAKbhKnGK9zM6o+Y1NI3mYGeQ7iJ7heYzOoDcE2CI9zVntuYwe5rcDxQ="), 5, ua.NodeIdType.ByteString)
 node_w_main_E        = ua.NodeId(base64.b64decode("AQAAAKbhKnGK9zM6o+Y1NI3mYGeQ7iJ7heYzOp7cDXWA7QVCtsZA"), 5, ua.NodeIdType.ByteString)
 node_w_main_O        = ua.NodeId(base64.b64decode("AQAAAKbhKnGK9zM6o+Y1NI3mYGeQ7iJ7heYzOp7cDXWA7QVCtsxA"), 5, ua.NodeIdType.ByteString)
-
+node_w_packed_data   = ua.NodeId(base64.b64decode("AQAAAKbhKnGK9zM6o+Y1NI3mYGeQ7iJ7heYzOp7cMHWK6CVwtuchYIjcL2SK9iEU"), 5, ua.NodeIdType.ByteString)
 
 # CONFIGURATION EPOS
 NODE_ID_1 = 1  # Node ID
@@ -60,6 +59,8 @@ w_main_O = 0
 # output ( write to OPCUA )
 i_status_epos_E = 0
 i_status_epos_O = 0
+old_i_status_epos_E = 0
+old_i_status_epos_O = 0
 
 
 ###################     MAIN LOOP     ###################
@@ -67,19 +68,22 @@ while True:
     
     # Read the values from the OPC UA server
     try:
-        t1 = time.time()
-        b_Homing_E = client.get_node(node_b_Homing_E).get_value()
-        t2 = time.time()
-        b_Homing_O = client.get_node(node_b_Homing_O).get_value()
-        t3 = time.time()
-        w_main_E = client.get_node(node_w_main_E).get_value()
-        t4 = time.time()
-        w_main_O = client.get_node(node_w_main_O).get_value()
-        t5 = time.time()
-        client.get_node(node_i_status_epos_E).set_value(i_status_epos_E, ua.VariantType.Int16)
-        t6 = time.time()
-        client.get_node(node_i_status_epos_O).set_value(i_status_epos_O, ua.VariantType.Int16)
-        t7 = time.time()
+        packed_data = client.get_node(node_w_packed_data).get_value()
+        b_Homing_E = packed_data & 0b0000000000000001  
+        b_Homing_O = (packed_data >> 8) & 0b0000000000000001 
+        w_main_E = (packed_data >> 1) & 0b0000000001111111
+        w_main_O = (packed_data >> 9) & 0b0000000001111111
+
+        if(i_status_epos_E != old_i_status_epos_E):
+            client.get_node(node_i_status_epos_E).set_value(i_status_epos_E, ua.VariantType.Int16)
+            old_i_status_epos_E = i_status_epos_E
+        if(i_status_epos_O != old_i_status_epos_O):
+            client.get_node(node_i_status_epos_O).set_value(i_status_epos_O, ua.VariantType.Int16)
+            old_i_status_epos_O = i_status_epos_O
+
+
+
+
     except Exception as e:
         print(f"Erreur OPC UA read/write data: {e}")
     
