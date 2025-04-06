@@ -71,16 +71,27 @@ while True:
         b_Homing_O = client.get_node(node_b_Homing_O).get_value()
         w_main_E = client.get_node(node_w_main_E).get_value()
         w_main_O = client.get_node(node_w_main_O).get_value()
-
         client.get_node(node_i_status_epos_E).set_value(i_status_epos_E, ua.VariantType.Int32)
         client.get_node(node_i_status_epos_O).set_value(i_status_epos_O, ua.VariantType.Int32)
     except Exception as e:
         print(f"Erreur OPC UA read/write data: {e}")
+    
 
     VALVE_1_INCREMENT = int((VALVE_1_INCREMENT_FULL - VALVE_1_INCREMENT_CLOSED) * w_main_E / 100)
     VALVE_2_INCREMENT = int((VALVE_2_INCREMENT_FULL - VALVE_2_INCREMENT_CLOSED) * w_main_O / 100)
-    i_status_epos_E = int(move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, VALVE_1_INCREMENT))
-    i_status_epos_O = int(move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, VALVE_2_INCREMENT))
+    try:
+        move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, VALVE_1_INCREMENT)
+        move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, VALVE_2_INCREMENT)
+        i_status_epos_E = 1
+        i_status_epos_O = 1
+    except Exception as e:
+        i_status_epos_E = 2
+        i_status_epos_O = 2
+
+
+    if b_Homing_E == 1: i_status_epos_E = 3
+    if b_Homing_O == 1: i_status_epos_O = 4
+    
 
     time.sleep(TIME_SLEEP)
 
