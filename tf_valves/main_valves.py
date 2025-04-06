@@ -22,6 +22,8 @@ NODE_ID_2 = 2
 USB_1 = b'USB0'   # USB port
 USB_2 = b'USB1'
 VALVE_INCREMENT_per_turn = 1703936 # 90 degrees 1703936 (131072 steps/turn on motor)
+VALVE_1_INCREMENT_CLOSED = 0
+VALVE_2_INCREMENT_CLOSED = 0
 VALVE_1_INCREMENT_FULL = int(1/4 * VALVE_INCREMENT_per_turn)
 VALVE_2_INCREMENT_FULL = int(1/4 * VALVE_INCREMENT_per_turn)
 HOMING_INCREMENT = 1000
@@ -65,11 +67,12 @@ while True:
     except Exception as e:
         print(f"Erreur OPC UA reading data: {e}")
 
+    VALVE_1_INCREMENT = (VALVE_1_INCREMENT_FULL - VALVE_1_INCREMENT_CLOSED) * w_main_E / 100
+    VALVE_2_INCREMENT = (VALVE_2_INCREMENT_FULL - VALVE_2_INCREMENT_CLOSED) * w_main_O / 100
+    move_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, VALVE_1_INCREMENT)
+    move_to_position(epos_2, keyhandle_2, NodeID_2, pErrorCode_2, VALVE_2_INCREMENT)
 
-    # Print the values
-    print(f"b_Homing_E: {b_Homing_E}, b_Homing_O: {b_Homing_O}, i_status_epos_E: {i_status_epos_E}, i_status_epos_O: {i_status_epos_O}, w_main_E: {w_main_E}, w_main_O: {w_main_O}")
-    
-
+    time.sleep(TIME_SLEEP)
 
     #if VALVE_1_PIN_VALUE_FULL == GPIO.LOW and PIN_1_STATE_FULL == GPIO.HIGH:
     #    print('test1')
