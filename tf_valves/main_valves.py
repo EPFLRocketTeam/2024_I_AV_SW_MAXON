@@ -66,8 +66,6 @@ old_i_status_epos_O = 0
 OLD_VALVE_1_INCREMENT = 1
 OLD_VALVE_2_INCREMENT = 1
 
-#test
-t = 0
 
 
 ###################     MAIN LOOP     ###################
@@ -110,11 +108,12 @@ while True:
         i_status_epos_O = 2
 
     # Tests
-    if b_Homing_E == 1: i_status_epos_E = 3
-    if b_Homing_O == 1: i_status_epos_O = 4
+    while b_Homing_E == 1:
+        go_to_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1, HOMING_INCREMENT)
+        time.sleep(TIME_SLEEP)
+        set_home_position(epos_1, keyhandle_1, NodeID_1, pErrorCode_1)
+        time.sleep(TIME_SLEEP)
     
-    print(f"cycle: {time.time()-t}")
-    t = time.time()
 
     #time.sleep(TIME_SLEEP)
 
