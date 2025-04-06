@@ -61,10 +61,6 @@ w_main_O = 0
 i_status_epos_E = 0
 i_status_epos_O = 0
 
-# test
-t1 = 0
-t2 = 0
-t3 = 0
 
 ###################     MAIN LOOP     ###################
 while True:
@@ -75,12 +71,13 @@ while True:
         b_Homing_O = client.get_node(node_b_Homing_O).get_value()
         w_main_E = client.get_node(node_w_main_E).get_value()
         w_main_O = client.get_node(node_w_main_O).get_value()
+        t2 = time.time()
         client.get_node(node_i_status_epos_E).set_value(i_status_epos_E, ua.VariantType.Int16)
         client.get_node(node_i_status_epos_O).set_value(i_status_epos_O, ua.VariantType.Int16)
     except Exception as e:
         print(f"Erreur OPC UA read/write data: {e}")
     
-    t2 = time.time()
+    t3 = time.time()
     VALVE_1_INCREMENT = int((VALVE_1_INCREMENT_FULL - VALVE_1_INCREMENT_CLOSED) * w_main_E / 100)
     VALVE_2_INCREMENT = int((VALVE_2_INCREMENT_FULL - VALVE_2_INCREMENT_CLOSED) * w_main_O / 100)
     try:
@@ -94,12 +91,12 @@ while True:
         i_status_epos_E = 2
         i_status_epos_O = 2
 
-    t3 = time.time()
+    t4 = time.time()
     # Tests
     if b_Homing_E == 1: i_status_epos_E = 3
     if b_Homing_O == 1: i_status_epos_O = 4
     
-    print(f"Temps de cycle : opcua: {t2-t1}s, epos: {t3-t2}s")
+    print(f"Temps de cycle : opcua in: {t2-t1}s, opcua out: {t3-t2}s, epos: {t4-t3}s")
     
 
     #time.sleep(TIME_SLEEP)
