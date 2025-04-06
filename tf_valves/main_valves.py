@@ -61,6 +61,8 @@ w_main_O = 0
 i_status_epos_E = 0
 i_status_epos_O = 0
 
+# test
+t = 0
 
 ###################     MAIN LOOP     ###################
 while True:
@@ -91,9 +93,12 @@ while True:
         i_status_epos_O = 2
 
 
+    # Tests
     if b_Homing_E == 1: i_status_epos_E = 3
     if b_Homing_O == 1: i_status_epos_O = 4
     
+    print(f"Temps de cycle : {time.time()-t} secondes")
+    t = time.time()
 
     time.sleep(TIME_SLEEP)
 
